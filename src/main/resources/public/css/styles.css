@@ -1,3 +1,18 @@
+
+.nav{
+margin-left:40%;
+}
+.nav a{
+text-decoration:none;
+padding:10px;
+color:rgb(40, 211, 211);
+border-bottom: 6px solid rgb(40, 211, 211);;
+background-color: lightgrey;
+margin-right:20px;
+}
+.nav a:hover{
+color:white;
+}
 .top{
   text-align:center;
   font-size:22px;
@@ -27,13 +42,13 @@ margin-right:60px;
 margin-left:60px;
 
 }
-.navtitle nav a{
+.navview nav a{
 text-decoration:none;
 color:black;
-padding:80px;
+padding:10px;
 
 }
-.navtitle nav a:hover{
+.navview nav a:hover{
 text-decoration:none;
 color:rgb(40, 211, 211);
 border-bottom: 6px solid rgb(40, 211, 211);;
@@ -52,7 +67,7 @@ background-color: lightgrey;
 .sidenav a{
 text-decoration:none;
 color:black;
-padding:80px;
+padding:10px;
 
 }
 .sidenav a:hover{
