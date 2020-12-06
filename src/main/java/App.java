@@ -30,20 +30,20 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Sql2oDepartmentDao departmentDao;
-        Sql2oEmployeeDao employeeDao;
-        Sql2oGeneralNewsDao generalnewsDao;
-        Sql2oDepartmentNewsDao departmentnewsDao;
+        Sql2oDepartmentDao sql2oDepartmentDao;
+        Sql2oEmployeeDao sql2oEmployeeDao;
+        Sql2oGeneralNewsDao sql2oGeneralNewsDao;
+        Sql2oDepartmentNewsDao sql2oDepartmentNewsDao;
         Connection conn;
         Gson gson = new Gson();
 
         String connectionString = "jdbc:postgresql://localhost:5432/companynews";
         Sql2o sql2o = new Sql2o(connectionString, "odile", "123");
 
-        departmentDao = new Sql2oDepartmentDao(sql2o);
-        employeeDao = new Sql2oEmployeeDao(sql2o);
-        generalnewsDao = new  Sql2oGeneralNewsDao(sql2o);
-        departmentnewsDao = new Sql2oDepartmentNewsDao(sql2o);
+        sql2oDepartmentDao = new Sql2oDepartmentDao(sql2o);
+        sql2oEmployeeDao = new Sql2oEmployeeDao(sql2o);
+        sql2oGeneralNewsDao = new  Sql2oGeneralNewsDao(sql2o);
+        sql2oDepartmentNewsDao = new Sql2oDepartmentNewsDao(sql2o);
         conn = sql2o.open();
 
         port(getHerokuAssignedPort());
@@ -53,21 +53,160 @@ public class App {
             Map<String,Object> model=new HashMap<String, Object>();
             return new ModelAndView(model,"index.hbs");
         },new HandlebarsTemplateEngine());
-
         //ranger
+//department
+    //interface
         get("/create/department",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
             return new ModelAndView(model,"departmentform.hbs");
         },new HandlebarsTemplateEngine());
 
+        post("/create/department/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String name=request.queryParams("name");
+            String description=request.queryParams("description");
+            String size=request.queryParams("size");
+            Department department=new Department(name,description);
+            sql2oDepartmentDao.add( department);
+            request.session().attribute("item", name);
+            model.put("item", request.session().attribute("item"));
+            return new ModelAndView(model,"departmentform.hbs");
+            //return new ModelAndView(model,"departmentsuccess.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //retrieving the department
+        get("/view/departments",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("departments",sql2oDepartmentDao.getAll());
+            return new ModelAndView(model,"departmentview.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //retrive department news
+       /*get("/view/location/sightings/:id",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int idOfLocation= Integer.parseInt(request.params(":id"));
+            Department foundLocation= Department.sql2oDepartmentDao.findById(idOfLocation);
+            List<DepartmentNews> news=foundLocation.getAll();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (RegSighting sighting : news){
+                String animal_name=RegAnimal.find(sighting.getRegAnimal_id()).getName();
+                String animal_type=RegAnimal.find(sighting.getRegAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",news);
+            model.put("animals",animals);
+            model.put("types",types);
+            model.put("locations",RegLocation.all());
+            return new ModelAndView(model,"locationview.hbs");
+        },new HandlebarsTemplateEngine());*/
+
+
+    //Api
         //
-        post("/departmets/new", "application/json", (req, res) -> {
+        post("/departments/new", "application/json", (req, res) -> {
             Department department = gson.fromJson(req.body(), Department.class);
-            departmentDao.add(department);
+            sql2oDepartmentDao.add(department);
             res.status(201);
             res.type("application/json");
             return gson.toJson(department);
         });
+
+// Employee
+    // interface
+        //creating employee interface
+        get("/create/employee",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"employeeform.hbs");
+        },new HandlebarsTemplateEngine());
+        //employee retrieval
+        post("/create/employee/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String name=request.queryParams("name");
+            String position=request.queryParams("position");
+            String role=request.queryParams("role");
+            Employee employee=new Employee(name, position, role);
+            sql2oEmployeeDao.add( employee);
+            request.session().attribute("item", name);
+            model.put("item", request.session().attribute("item"));
+            return new ModelAndView(model,"employeeform.hbs");
+            //return new ModelAndView(model,"employeesuccess.hbs");
+        },new HandlebarsTemplateEngine());
+        //retrieving the employee
+        get("/view/employees",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("employees",sql2oEmployeeDao.getAll());
+            return new ModelAndView(model,"employeeview.hbs");
+        },new HandlebarsTemplateEngine());
+    //Api
+
+//General News
+    //Interface
+        // creating news interface
+        get("/create/news",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"generalnewsform.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //news retrieval
+        post("/create/news/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String title=request.queryParams("title");
+            String writtenBy=request.queryParams("writtenBy");
+            String content=request.queryParams("content");
+            int employee_id=Integer.parseInt(request.params("id"));
+            int department_id=Integer.parseInt(request.params("id"));
+            GeneralNews generalnews=new GeneralNews(title,writtenBy, content,employee_id);
+            sql2oGeneralNewsDao.addGeneralNews(generalnews);
+            request.session().attribute("item", title);
+            model.put("item", request.session().attribute("item"));
+            return new ModelAndView(model,"generalnewsform.hbs");
+            //return new ModelAndView(model,"employeesuccess.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //retrieving the department
+        get("/view/news",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("news",sql2oGeneralNewsDao.getAll());
+            return new ModelAndView(model,"generalnewsview.hbs");
+        },new HandlebarsTemplateEngine());
+
+    //Api
+//General News
+    //Interface
+        // creating news interface
+        get("/create/news",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"departmentnewsform.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //news retrieval
+        post("/create/news/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String title=request.queryParams("title");
+            String writtenBy=request.queryParams("writtenBy");
+            String content=request.queryParams("content");
+            int employee_id=Integer.parseInt(request.params("id"));
+            int department_id=Integer.parseInt(request.params("id"));
+            DepartmentNews departmentnews=new DepartmentNews(title,writtenBy, content,employee_id,department_id);
+            sql2oDepartmentNewsDao.addDepartmentNews(departmentnews);
+            request.session().attribute("item", title);
+            model.put("item", request.session().attribute("item"));
+            return new ModelAndView(model,"departmentnewsform.hbs");
+            //return new ModelAndView(model,"employeesuccess.hbs");
+        },new HandlebarsTemplateEngine());
+
+        //retrieving the department
+        get("/view/news",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("news",sql2oDepartmentNewsDao.getAll());
+            return new ModelAndView(model,"departmentnewsview.hbs");
+        },new HandlebarsTemplateEngine());
+
+    //Api
+
+
 
 /*
 
