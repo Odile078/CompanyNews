@@ -68,7 +68,7 @@ public class Sql2oEmployeeDao implements EmployeeDao{
 
     @Override
     public void update(int id,String name, String position, String role) {
-        String sql = "UPDATE employees SET (name, position, role) = (:name, :position, :role) WHERE id=:id"; //CHECK!!!
+        String sql = "UPDATE employees SET (name, position, role) = (:name, :position, :role) WHERE id=:id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("name", name)
@@ -84,7 +84,7 @@ public class Sql2oEmployeeDao implements EmployeeDao{
 
     @Override
     public void deleteById(int id) {
-        String sql = "DELETE from employees WHERE id = :id"; //raw sql
+        String sql = "DELETE from employees WHERE id = :id";
         String deleteJoin = "DELETE from employees_departments WHERE employee_id = :employee_id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
