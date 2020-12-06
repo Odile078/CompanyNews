@@ -52,14 +52,28 @@ public class GeneralNews {
     public void setContent(String content) {
         this.content = content;
     }
-    public void setCreatedat(Timestamp createdat) {
-        this.createdat = createdat;
-    }
-
+    public void setCreatedat(Timestamp createdat) { this.createdat = createdat; }
     public void setId(int id) {
         this.id = id;
     }
     public void setEmployee_id(int employee_id) { this.employee_id = employee_id; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeneralNews that = (GeneralNews) o;
+        return id == that.id &&
+                employee_id == that.employee_id &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(writtenBy, that.writtenBy) &&
+                Objects.equals(content, that.content) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(createdat, that.createdat);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, writtenBy, content, employee_id, date, createdat);
+    }
 }
