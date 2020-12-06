@@ -1,0 +1,59 @@
+
+{{#partial "content"}}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 sidenav">
+                <a href="">Create Employees</a>
+                <a href="">Create Departments</a>
+                <a href="">Create the General news</a>
+                <a href="">Create the Department news</a>
+                <a href="">View Employees</a>
+                <a href="">View Departments</a>
+                <a href="">View the General news</a>
+                <a href="">View the Department news</a>
+            </div>
+            <div class="col-md-9">
+                <div class="intro">
+                    <h3>News Portal</h3>
+                    <p>View employee, Department and News</p>
+                </div>
+                <div class="worker"></div>
+                <div>
+                    <form action="/create/employees/new" method="post">
+                        <h3 class="text bgt">you are an employee, register yourself</h3>
+
+                        <div class="form-group">
+                            <label for="name">Employee Name</label>
+                            <input type="text" class="form-control" id="name" name="name"  required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Position</label>
+                            <input type="text" class="form-control" id="position" name="position"  required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Role</label>
+                            <input type="text" class="form-control" id="role" name="role"  required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info "> Register </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{{/partial}}
+
+{{> layout.hbs}}

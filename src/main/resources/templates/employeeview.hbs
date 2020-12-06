@@ -1,0 +1,52 @@
+
+{{#partial "content"}}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 sidenav">
+                <a href="">Create Employees</a>
+                <a href="">Create Departments</a>
+                <a href="">Create the General news</a>
+                <a href="">Create the Department news</a>
+                <a href="">View Employees</a>
+                <a href="">View Departments</a>
+                <a href="">View the General news</a>
+                <a href="">View the Department news</a>
+            </div>
+            <div class="col-md-9">
+                <div class="intro">
+                    <h3>News Portal</h3>
+                    <p>View employee, Department and News</p>
+                </div>
+                <div class="worker"></div>
+                <div>
+                    {{#if employees}}
+                        {{#each employees as |e|}}
+                            <div class="col-md-4">
+                                <div class="ltext">
+                                    <p class="text" id={{e.id}}>{{e.name}}</p><br>
+                                    <p class="text" id={{e.id}}>{{e.position}}</p><br>
+                                    <p class="text" id={{e.id}}>{{e.role}}</p><br>
+                                    <a href="/view/ranger/sightings/{{e.id}}"><button class="btn btn-info btn-md">View
+                                        Sightings</button></a><br>
+
+                                </div>
+                                <br>
+                            </div>
+                        {{/each}}
+
+                    {{else}}
+                        <p class="text s-title">There are no registered employees, register here <a href="/create/employee">here</a></p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{{/partial}}
+
+{{> layout.hbs}}

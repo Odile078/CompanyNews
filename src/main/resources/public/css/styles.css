@@ -1,0 +1,72 @@
+.top{
+  text-align:center;
+  font-size:22px;
+  color:white;
+  font-family: 'Lobster', cursive;
+}
+.top a{
+text-decoration:none;
+color:rgb(212, 179, 179);
+display: inline;
+font-size: 17px;
+
+
+}
+.top a:hover{
+text-decoration:none;
+color:rgb(238, 109, 50);
+}
+.navtitle{
+background-color: rgb(40, 211, 211);
+color: white;
+font-family: 'Peddana', serif;
+
+}
+.navview{
+margin-right:60px;
+margin-left:60px;
+
+}
+.navtitle nav a{
+text-decoration:none;
+color:black;
+padding:80px;
+
+}
+.navtitle nav a:hover{
+text-decoration:none;
+color:rgb(40, 211, 211);
+border-bottom: 6px solid rgb(40, 211, 211);;
+background-color: lightgrey;
+
+}
+
+/*index body*/
+.intro p{
+    color: black;
+
+}
+.intro p{
+    color: rgb(85, 82, 82);
+}
+.sidenav a{
+text-decoration:none;
+color:black;
+padding:80px;
+
+}
+.sidenav a:hover{
+text-decoration:none;
+color:rgb(40, 211, 211);
+border-left: 6px solid rgb(40, 211, 211);;
+background-color: lightgrey;
+}
+.worker{
+    background-image: url("/images/workers.png");
+     background-size:cover;
+}
+hr{
+    color:rgb(40, 211, 211);
+    height: 5px;
+
+}
