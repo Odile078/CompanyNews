@@ -1,3 +1,14 @@
+
+import com.google.gson.Gson;
+import dao.Sql2oDepartmentNewsDao;
+import dao.Sql2oEmployeeDao;
+import dao.Sql2oDepartmentDao;
+import dao.Sql2oGeneralNewsDao;
+import models.Employee;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import static spark.Spark.*;
+
 import models.*;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -19,6 +30,21 @@ public class App {
     }
 
     public static void main(String[] args) {
+        Sql2oDepartmentDao departmentDao;
+        Sql2oEmployeeDao employeeDao;
+        Sql2oGeneralNewsDao generalnewsDao;
+        Sql2oDepartmentNewsDao departmentnewsDao;
+        Connection conn;
+        Gson gson = new Gson();
+
+        String connectionString = "jdbc:postgresql://localhost:5432/companynews";
+        Sql2o sql2o = new Sql2o(connectionString, "odile", "123");
+
+        departmentDao = new Sql2oDepartmentDao(sql2o);
+        employeeDao = new Sql2oEmployeeDao(sql2o);
+        generalnewsDao = new  Sql2oGeneralNewsDao(sql2o);
+        departmentnewsDao = new Sql2oDepartmentNewsDao(sql2o);
+        conn = sql2o.open();
 
         port(getHerokuAssignedPort());
         staticFileLocation("/public");
@@ -33,6 +59,15 @@ public class App {
             Map<String,Object> model=new HashMap<String, Object>();
             return new ModelAndView(model,"departmentform.hbs");
         },new HandlebarsTemplateEngine());
+
+        //
+        post("/departmets/new", "application/json", (req, res) -> {
+            Department department = gson.fromJson(req.body(), Department.class);
+            departmentDao.add(department);
+            res.status(201);
+            res.type("application/json");
+            return gson.toJson(department);
+        });
 
 /*
 
