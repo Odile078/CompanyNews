@@ -4,6 +4,7 @@ import dao.Sql2oDepartmentNewsDao;
 import dao.Sql2oEmployeeDao;
 import dao.Sql2oDepartmentDao;
 import dao.Sql2oGeneralNewsDao;
+import exceptions.ApiException;
 import models.Employee;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -207,7 +208,21 @@ public class App {
     //Api
 //exception
 
+//FILTERS
+        exception(ApiException.class, (exception, request, response) -> {
+            ApiException err = exception;
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", err.getStatusCode());
+            jsonMap.put("errorMessage", err.getMessage());
+            response.type("application/json");
+            response.status(err.getStatusCode());
+            response.body(gson.toJson(jsonMap));
+        });
 
+
+        after((request, response) ->{
+            response.type("application/json");
+        });
 //after
 
 /*
